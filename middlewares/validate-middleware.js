@@ -4,9 +4,18 @@ const validate = (schema) => async (req, res, next) => {
     req.body = parseBody;
     next();
   } catch (err) {
-    const message = err;
-    console.log(message.errors[0].message);
-    res.status(400).json({ message: message.errors[0].message });
+    const status = 422;
+    const message = "Fill the field properly";
+    const extraDetails = err.errors[0].message;
+
+    const error = {
+      status,
+      message,
+      extraDetails,
+    };
+
+    // res.status(400).json({ message: message.errors[0].message });
+    next(error);
   }
 };
 
